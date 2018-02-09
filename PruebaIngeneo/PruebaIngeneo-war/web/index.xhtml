@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h:head>
+        <title>INSERCION PEDIDOS</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <body>
+        <h1> BIENVENIDO , POR FAVOR INGRESE LA INFORMACION DEL PEDIDO</h1>
+    
+        <h:form>
+            <p:growl showDetail="false" id="msg" />
+            <p:panelGrid columns="2">
+                <p:outputLabel for="precio">Precio:</p:outputLabel>
+                <p:inputText id="precio" required="true" value="#{informacionPedidoMB.precio}" />
+                
+                 <p:outputLabel for="fecha" >Fecha:</p:outputLabel>
+                 <p:calendar id="fecha" required="true" value="#{informacionPedidoMB.fecha}" ></p:calendar>
+                
+                 <p:outputLabel for="peso">Peso:</p:outputLabel>
+                 <p:inputNumber id="peso" required="true"  value="#{informacionPedidoMB.peso}" />
+                
+                <p:outputLabel for="nombreCliente">Nombre del Cliente:</p:outputLabel>
+                <p:inputText id="nombreCliente" required="true"  value="#{informacionPedidoMB.nombreCliente}" />
+                
+                 <p:outputLabel for="cedulaCliente">Cedula del Cliente:</p:outputLabel>
+                 <p:inputText id="cedulaCliente" required="true"  value="#{informacionPedidoMB.cedula}"/>
+                
+                 <p:outputLabel for="destino">Destino</p:outputLabel>
+                 <p:selectOneMenu id="destino" value="#{informacionPedidoMB.destino}" >
+                     <f:selectItems value="#{informacionPedidoMB.listaDestino}" var="destino"  itemLabel="#{destino.destnombre}" itemValue="#{destino}"> </f:selectItems>
+                 </p:selectOneMenu>
+                
+            </p:panelGrid>
+            <p:commandButton actionListener="#{informacionPedidoMB.guardar()}" value="Guardar" update="#{p:component('msg')}"/>
+            <p:dataTable var="pedido" value="#{informacionPedidoMB.listaPedido}" widgetVar="tablaDestino"
+                         emptyMessage="No hay registros" filteredValue="#{informacionPedidoMB.listaPedidoFiltrado}">
+ 
+        <f:facet name="header">
+            <p:outputPanel>
+                <h:outputText value="buscar en todos los campos:" />
+                <p:inputText id="globalFilter" onkeyup="PF('tablaDestino').filter()" style="width:150px" placeholder="Ingresar palabra"/>
+            </p:outputPanel>
+        </f:facet>
+ 
+        <p:column filterBy="#{pedido.id}" headerText="Id" footerText="contains" filterMatchMode="contains">
+            <h:outputText value="#{pedido.id}" />
+        </p:column>
+ 
+                <p:column filterBy="#{pedido.pediFecha}" headerText="Fecha" footerText="lte" filterMatchMode="lte">
+            
+            <h:outputText value="#{pedido.pediFecha}" />
+        </p:column>
+ 
+                <p:column filterBy="#{pedido.pedivehiculoid.vehiplaca}" headerText="Vehiculo" footerText="exact" filterMatchMode="exact">
+            
+            <h:outputText value="#{pedido.pedivehiculoid.vehiplaca}" />
+        </p:column>
+ 
+                <p:column filterBy="#{pedido.pedidestinoid.destnombre}" headerText="Color" footerText="in" filterMatchMode="in">
+           
+            <h:outputText value="#{pedido.pedidestinoid.destnombre}" />
+        </p:column>
+ 
+    
+    </p:dataTable>
+        
+        </h:form>
+    </body>
+</html>
